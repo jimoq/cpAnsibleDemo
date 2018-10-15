@@ -1,0 +1,309 @@
+---
+# Create Orchestration_Demo_Policy
+- name: "login"
+  check_point_mgmt:
+    command: login
+    parameters:
+      username: "{{mgmt_user}}"
+      password: "{{mgmt_password}}"
+      domain: "{{domain}}"
+      management: "{{mgmt_server}}"
+    fingerprint: "{{mgmt_fingerprint}}"
+  register: login_response
+
+- name: "create-new-policy-package"
+  check_point_mgmt:
+    command: add-package
+    parameters:
+      name: "Orchestration_Demo_Policy"
+      comments: "Created by ansible during Orchestration demo"
+      color: "green"
+      threat-prevention: "true"
+      access: "true"
+    session-data: "{{login_response}}"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+
+- name: "add-internal-nets-group"
+  check_point_mgmt:
+    command: add-group
+    parameters:
+      name: "ACME_nets"
+    session-data: "{{login_response}}"
+    
+- name: "add-SecurityGateways-nets-group"
+  check_point_mgmt:
+    command: add-group
+    parameters:
+      name: "ACME_Security_Gateways"
+    session-data: "{{login_response}}"
+
+- name: "add ACME External Subnet"
+  check_point_mgmt:
+    command: add-network
+    parameters:
+      name: "External"
+      subnet: "{{ external_subnet_cidr | ipaddr('network') }}" 
+      subnet-mask: "{{ external_subnet_cidr | ipaddr('netmask') }}"
+      color: "blue"
+    session-data: "{{login_response}}"
+
+- name: "add ACME Internal Subnet"
+  check_point_mgmt:
+    command: add-network
+    parameters:
+      name: "Internal"
+      subnet: "{{ internal_subnet_cidr | ipaddr('network') }}" 
+      subnet-mask: "{{ internal_subnet_cidr | ipaddr('netmask') }}"
+      groups: "ACME_nets"
+      color: "blue"
+    session-data: "{{login_response}}"
+
+- name: "add ACME Web Server Subnet"
+  check_point_mgmt:
+    command: add-network
+    parameters:
+      name: "WebServers"
+      subnet: "{{ webserver_subnet_cidr | ipaddr('network') }}" 
+      subnet-mask: "{{ webserver_subnet_cidr | ipaddr('netmask') }}"
+      groups: "ACME_nets"
+      color: "cyan"
+    session-data: "{{login_response}}"
+
+- name: "add ACME DB Server Subnet"
+  check_point_mgmt:
+    command: add-network
+    parameters:
+      name: "DBServers"
+      subnet: "{{ database_subnet_cidr | ipaddr('network') }}" 
+      subnet-mask: "{{ database_subnet_cidr | ipaddr('netmask') }}"
+      groups: "ACME_nets"
+      color: "cyan"
+    session-data: "{{login_response}}"
+
+- name: "add ACME Load Balancer Subnet #1"
+  check_point_mgmt:
+    command: add-network
+    parameters:
+      name: "LoadBalancer1"
+      subnet: "{{ lb1_subnet_cidr | ipaddr('network') }}" 
+      subnet-mask: "{{ lb1_subnet_cidr | ipaddr('netmask') }}"
+      groups: "ACME_nets"
+      color: "orange"
+    session-data: "{{login_response}}"
+
+- name: "add ACME Load Balancer Subnet #2"
+  check_point_mgmt:
+    command: add-network
+    parameters:
+      name: "LoadBalancer2"
+      subnet: "{{ lb2_subnet_cidr | ipaddr('network') }}" 
+      subnet-mask: "{{ lb2_subnet_cidr | ipaddr('netmask') }}"
+      groups: "ACME_nets"
+      color: "orange"
+    session-data: "{{login_response}}"
+
+- name: "Add Hide Host"
+  check_point_mgmt:
+    command: add-host
+    parameters:
+      name: "CHKP-SG-Hide"
+      ip-address: "{{ perimeter_gw_external_ip }}"
+      color: "red"
+    session-data: "{{login_response}}"
+
+- name: "add access section default drop"
+  check_point_mgmt:
+    command: add-access-section
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "default drop"
+      position: "top"
+    session-data: "{{login_response}}"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+    
+- name: "add access section ACMECorp rules"
+  check_point_mgmt:
+    command: add-access-section
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "ACMECorp Rules"
+      position: "top"
+    session-data: "{{login_response}}"
+
+- name: "add access rule for ICMP and HTTSP from Any Network"
+  check_point_mgmt:
+    command: add-access-rule
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "Allow ICMP and HTTPS"
+      position:
+        top: "ACMECorp Rules"
+      source:
+        - "any"
+      destination:
+        - "any"
+      service:
+        - "icmp-requests"
+        - "https"
+      action: "accept"
+      track: "Log"
+    session-data: "{{login_response}}"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+    
+- name: "add access rule from ACMECorp to any networks"
+  check_point_mgmt:
+    command: add-access-rule
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "LoadBalancers"
+      position:
+        top: "ACMECorp Rules"
+      source:
+        - "any"
+      destination:
+        - "LoadBalancer1"
+        - "LoadBalancer2"
+      service:
+        - "http"
+        - "https"
+      action: "accept"
+      track: "Log"
+    session-data: "{{login_response}}"
+
+- name: "add access rule from ACMECorp to any networks"
+  check_point_mgmt:
+    command: add-access-rule
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "ACMECorp WebServer Outbound Access"
+      position:
+        top: "ACMECorp Rules"
+      source:
+        - "WebServers"
+      destination:
+        - "any"
+      service:
+        - "http"
+        - "https"
+        - "ntp"
+        - "dns"
+      action: "accept"
+      track: "Log"
+    session-data: "{{login_response}}"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+    
+- name: "add access rule for Web to DB networks"
+  check_point_mgmt:
+    command: add-access-rule
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "ACMECorp WebServer to DB"
+      position:
+        top: "ACMECorp Rules"
+      source:
+        - "WebServers"
+      destination:
+        - "DBServers"
+      service:
+        - "MySQL"
+      action: "accept"
+      track: "Log"
+    session-data: "{{login_response}}"
+
+- name: "add access rule for Internal to any networks"
+  check_point_mgmt:
+    command: add-access-rule
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "ACMECorp internal to Any"
+      position:
+        top: "ACMECorp Rules"
+      source:
+        - "Internal"
+      destination:
+        - "any"
+      service:
+        - "any"
+      action: "accept"
+      track: "Log"
+    session-data: "{{login_response}}"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+    
+- name: "add access rule for External to any networks"
+  check_point_mgmt:
+    command: add-access-rule
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "ACMECorp external to Any"
+      position:
+        top: "ACMECorp Rules"
+      source:
+        - "External"
+      destination:
+        - "any"
+      service:
+        - "any"
+      action: "accept"
+      track: "Log"
+    session-data: "{{login_response}}"
+
+- name: "add access rule management access to Security Gateways"
+  check_point_mgmt:
+    command: add-access-rule
+    parameters:
+      layer: "Orchestration_Demo_Policy Network"
+      name: "ACMECorp management access to Security Gateways"
+      position:
+        top: "ACMECorp Rules"
+      source:
+        - "any"
+      destination:
+        - "ACME_Security_Gateways"
+      service:
+        - "ssh"
+        - "https"
+      action: "accept"
+      track: "Log"
+    session-data: "{{login_response}}"
+
+- name: "add NAT rule for Webserver "
+  check_point_mgmt:
+    command: add-nat-rule
+    parameters:
+      package: "Orchestration_Demo_Policy"
+      comments: "Webserver NAT"
+      position: "top"
+      original-source: "WebServers"
+      translated-source: "CHKP-SG-Hide"
+      method: "hide"
+    session-data: "{{login_response}}"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+
+- name: "logout"
+  check_point_mgmt:
+    command: logout
+    session-data: "{{login_response}}"

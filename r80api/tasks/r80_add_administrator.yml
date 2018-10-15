@@ -1,0 +1,55 @@
+---
+# Add administrators to the Check Pint 
+- name: "login {{mgmt_fingerprint}}"
+  check_point_mgmt:
+    command: login
+    parameters:
+      username: "{{mgmt_user}}"
+      password: "{{mgmt_password}}"
+      domain: "System Data"
+      management: "{{mgmt_server}}"
+    fingerprint: "{{mgmt_fingerprint}}"
+  register: login_response
+
+- name: "Session {{lookup('pipe','date')}} - Create ACME Corp Admins"
+  check_point_mgmt:
+    command: set-session
+    parameters:
+      new-name: "{{lookup('pipe','date')}} - Create ACME Corp Admins"
+      description: "Creating administrators for ACME Corp"
+    session-data: "{{login_response}}"
+
+- name: "Create MDS administrator"
+  check_point_mgmt:
+    command: add-administrator
+    parameters:
+      name: "{{item.name}}"
+      password: "{{item.password}}"
+      must-change-password: "false"
+      multi-domain-profile: "Multi-Domain Super User"
+    session-data: "{{login_response}}"
+  loop: "{{chkp_admins}}"
+  when: type == "mds"
+
+- name: "Create Security management administrator"
+  check_point_mgmt:
+    command: add-administrator
+    parameters:
+      name: "{{item.name}}"
+      password: "{{item.password}}"
+      must-change-password: "false"
+      permissions-profile: "Super User"
+    session-data: "{{login_response}}"
+  loop: "{{chkp_admins}}"
+  when: type != "mds"
+
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+
+- name: "logout"
+  check_point_mgmt:
+    command: logout
+    session-data: "{{login_response}}"

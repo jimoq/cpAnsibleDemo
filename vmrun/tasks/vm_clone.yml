@@ -1,0 +1,22 @@
+---
+- hosts: "localhost"
+  vars_files:
+  - vars.yml
+  - "{{vars_file}}"
+  gather_facts: no
+  connection: local  
+
+  tasks:
+  - name: Create R80.x linked clone {{hostname}} from {{vmname}}
+    raw: vmrun.exe -T ws clone "{{virtual_machines}}{{vmname}}\{{vmname}}.vmx" "{{virtual_machines}}{{hostname}}\{{hostname}}.vmx" linked -snapshot={{snapshot}} -cloneName={{hostname}}
+
+  - name: "Start Virtual Machine {{hostname}}"
+    raw: vmrun.exe -T ws start "{{virtual_machines}}{{hostname}}\{{hostname}}.vmx" gui 
+
+  - name: Wait 300 seconds for port 22 on {{template_ip}} to become open and contain "OpenSSH"
+    wait_for:
+      port: 22
+      host: "{{template_ip}}"
+      search_regex: OpenSSH
+      delay: 10
+    connection: local

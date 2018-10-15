@@ -1,0 +1,18 @@
+---
+# tasks file for gaia setting new IP on interface Eth0
+- name: "Create config for eth0"
+  raw: echo "sleep 2;clish -c 'set interface eth0 ipv4-address {{eth0_ipv4}} mask-length 24' -s; ping 172.27.254.1 -c 10" > /home/admin/SetEth0
+  when: inventory_hostname in groups['gaia_template']
+  
+- name: "Change permissions"
+  raw: chmod 755 /home/admin/SetEth0 
+  when: inventory_hostname in groups['gaia_template']
+
+- name: "Run the eth0 change"
+  shell: "nohup /bin/bash /home/admin/SetEth0 &" 
+  poll: 0
+  when: inventory_hostname in groups['gaia_template']
+  
+- pause:
+    seconds: 15
+#  when: inventory_hostname in groups['gaia_template']

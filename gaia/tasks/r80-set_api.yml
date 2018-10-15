@@ -1,0 +1,57 @@
+---
+- name: Check to see if API Server is ready.
+  shell: source /etc/bashrc ; api status
+  register: api_output
+  until: api_output.stdout.find('SUCCESSFUL.') != -1
+  delay: 5
+  retries: 100
+  when: inventory_hostname not in groups['gaia_template']
+  
+- name: Set API server to listen to any source
+  shell: source /etc/bashrc ; mgmt_cli -r true -d "System Data" set api-settings accepted-api-calls-from "All IP addresses"
+  when: inventory_hostname not in groups['gaia_template']
+
+- name: Add Multi-Domain admin api_user
+  shell: source /etc/bashrc ; mgmt_cli -r true -d "System Data" add administrator name "api_user" password "vpn123" must-change-password false authentication-method "INTERNAL_PASSWORD" multi-domain-profile "Multi-Domain Super User"
+  when: type == "mds" and inventory_hostname not in groups['gaia_template']
+
+- name: Add Single Domain admin api_user
+  shell: source /etc/bashrc ; mgmt_cli -r true -d "System Data" add administrator name "api_user" password "vpn123" must-change-password false authentication-method "INTERNAL_PASSWORD" permissions-profile "Super User"
+  when: type != "mds" and inventory_hostname not in groups['gaia_template']
+
+- name: Reload API configuration
+  shell: source /etc/bashrc ; api reconf
+  when: inventory_hostname not in groups['gaia_template']
+
+- name: Get output from api fingerprint
+  shell: source /etc/bashrc ; api fingerprint
+  register: fingerprint_out
+  when: inventory_hostname not in groups['gaia_template']
+
+- name: Parse SHA1 fingerprint from api fingerprint output and store it in {{fingerprint_file}}
+  set_fact:
+    fingerprint_hash: "{{fingerprint_out.stdout_lines[3] | regex_replace('^SHA1: (.*)$', 'mgmt_fingerprint: \\1') }}"
+  when: inventory_hostname not in groups['gaia_template']
+  
+- name: When MDS - Parse SHA1 fingerprint from api fingerprint output and store it in hostvar mgmt_fingerprint
+  set_fact:
+    mgmt_fingerprint: "{{fingerprint_out.stdout_lines[3] | regex_replace('^SHA1: (.*)$', '\\1') }}"
+  when: type == "mds" and inventory_hostname not in groups['gaia_template']
+  
+- name: When SM - Parse SHA1 fingerprint from api fingerprint output and store it in hostvar mgmt_fingerprint
+  set_fact:
+    mgmt_fingerprint: "{{fingerprint_out.stdout_lines[3] | regex_replace('^SHA1: (.*)$', '\\1') }}"
+  when: type == "sm" and inventory_hostname not in groups['gaia_template']
+  
+- name: When SGSM - Parse SHA1 fingerprint from api fingerprint output and store it in hostvar mgmt_fingerprint
+  set_fact:
+    mgmt_fingerprint: "{{fingerprint_out.stdout_lines[3] | regex_replace('^SHA1: (.*)$', '\\1') }}"
+  when: type == "smsg" and inventory_hostname not in groups['gaia_template']
+
+- name: Copy API fingerprint to "{{fingerprint_file}}"
+  local_action: copy content={{fingerprint_hash}} dest="{{fingerprint_file}}"
+  when: inventory_hostname not in groups['gaia_template']
+
+#  - name: Set route for 10.5.2.0 network to allow Self Service portal Demo
+#    command: clish -c 'set static-route 10.2.5.0/24 nexthop gateway address 192.168.233.113 on' -s
+#    when: inventory_hostname not in groups['gaia_template']

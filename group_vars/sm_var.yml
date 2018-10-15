@@ -1,0 +1,12 @@
+---
+hostname: sm10
+snapshot: sm-pre-ftw
+type: sm
+sm_ip: 172.27.254.30
+eth0_ipv4: "{{sm_ip}}"
+subnet_mask: 255.255.255.0
+domain: SMC User
+target: "{{eth0_ipv4}}"            # Target to run the play
+# Variables used for Check Point Security Management module in ansible
+mgmt_server: "{{eth0_ipv4}}"
+fingerprint_file: './fingerprints/sm_finger.yml'

@@ -1,0 +1,15 @@
+---
+- hosts: "localhost"
+  vars_files:
+  - vars.yml
+  gather_facts: no
+  connection: local  
+
+  tasks:
+  - name: "Stop Virtual Machine {{hostname}}"
+ #   raw: vmrun.exe -T ws stop "{{virtual_machines}}{{hostname}}\{{hostname}}.vmx" gui 
+    raw: vmrun.exe -T ws snapshot "{{virtual_machines}}{{hostname}}\{{hostname}}.vmx" Start
+
+
+#  - name: Delete R80.x linked clone {{hostname}}
+ #   raw: vmrun.exe -T ws deleteVM "{{virtual_machines}}{{hostname}}\{{hostname}}.vmx" gui

@@ -1,0 +1,6 @@
+---
+hostname: sme10
+snapshot: sm-pre-ftw
+type: sme
+eth0_ipv4: 172.27.254.40
+subnet_mask: 255.255.255.0

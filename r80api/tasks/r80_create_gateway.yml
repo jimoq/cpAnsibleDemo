@@ -1,0 +1,98 @@
+---
+# If type is SG create Security Gateway Object and install AC and TP policy, if type is sgsm enable IPS blade and install AC and TP policy
+- name: Wait up to 10 minutes for SIC port 18211 to Open
+  wait_for:
+    port: 18211
+    host: "{{target}}"
+    delay: 10
+    timeout: 600
+  connection: local
+  when: type == "sg"
+
+- name: "login"
+  check_point_mgmt:
+    command: login
+    parameters:
+      username: "{{mgmt_user}}"
+      password: "{{mgmt_password}}"
+      domain: "{{domain}}"
+      management: "{{mgmt_server}}"
+    fingerprint: "{{mgmt_fingerprint}}"
+  register: login_response
+
+- name: "Create SimpleGateway {{hostname}} at {{eth0_ipv4}}"
+  check_point_mgmt:
+    command: add-simple-gateway 
+    parameters:
+      name: "{{hostname}}"
+      ipv4-address: "{{eth0_ipv4}}" 
+      color: blue
+      firewall: "true"
+      version: "R80.20"
+      ips: "true"
+      one-time-password: "{{sickey}}"
+      interfaces:
+      -  name: eth0
+         ipv4-address: "{{eth0_ipv4}}" 
+         ipv4-network-mask: "{{subnet_mask}}"
+         topology: External
+         anti-spoofing: "true"
+      -  name: "eth1"
+         ipv4-address: "{{eth1_ipv4}}" 
+         ipv4-network-mask: "{{subnet_mask}}" 
+         topology: Internal
+         anti-spoofing: "true"
+         topology-settings:
+           ip-address-behind-this-interface: "network defined by the interface ip and net mask"
+    session-data: "{{login_response}}"        
+  when: type == "sg"
+
+- name: "Enable IPS blade on {{hostname}}"
+  check_point_mgmt:
+    command: set-simple-gateway
+    parameters:
+      name: "{{hostname}}"
+      ips: "true"
+    session-data: "{{login_response}}"
+  when: type == "smsg"
+  
+- name: "add {{ hostname }} to access rule management access to Security Gateways"
+  check_point_mgmt:
+    command: set-group
+    parameters:
+      name: "ACME_Security_Gateways"
+      members:
+        add: "{{ hostname }}"
+    session-data: "{{login_response}}"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+
+- name: "Push Access Policy"
+  check_point_mgmt:
+    command: install-policy
+    parameters:
+      policy-package: "Orchestration_Demo_Policy"
+      access: "true"
+      threat-prevention: "false"
+      targets:
+        -  "{{hostname}}"
+    session-data: "{{login_response}}"
+
+- name: "Push Threat Policy"
+  check_point_mgmt:
+    command: install-policy
+    parameters:
+      policy-package: "Orchestration_Demo_Policy"
+      access: "false"
+      threat-prevention: "true"
+      targets:
+        -  "{{hostname}}"
+    session-data: "{{login_response}}"
+
+- name: "logout"
+  check_point_mgmt:
+    command: logout
+    session-data: "{{login_response}}"

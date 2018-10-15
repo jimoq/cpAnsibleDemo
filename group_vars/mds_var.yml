@@ -1,0 +1,13 @@
+---
+hostname: mds01
+snapshot: sm-pre-ftw
+type: mds
+mds_ip: 172.27.254.10
+#eth0_ipv4: "{{ groups['mds'][0] }}"
+eth0_ipv4: "{{mds_ip}}"
+subnet_mask: 255.255.255.0
+domain: nordics
+target: "{{eth0_ipv4}}"            # Target to run the play
+# Variables used for Check Point Security Management module in ansible
+mgmt_server: "{{eth0_ipv4}}"
+fingerprint_file: './fingerprints/mds_finger.yml'

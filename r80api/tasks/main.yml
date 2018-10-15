@@ -1,0 +1,10 @@
+---
+# tasks file for r80api
+- import_tasks: r80_add_administrator.yml
+  when: type != "sg"
+- import_tasks: r80_create_domain.yml
+  when: type != "sg"
+- import_tasks: r80_create_policy.yml
+  when: type != "sg"
+- import_tasks: r80_create_gateway.yml
+  when: type == "sg" or type == "smsg"

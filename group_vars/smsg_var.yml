@@ -1,0 +1,14 @@
+---
+hostname: smsg250
+snapshot: pre-ftw
+type: smsg
+smsg_ip: 172.27.254.250
+eth0_ipv4: "{{smsg_ip}}"
+eth1_ipv4: 10.2.0.250
+eth2_ipv4: 192.168.80.250
+subnet_mask: 255.255.255.0
+domain: SMC User
+target: "{{eth0_ipv4}}"            # Target to run the play
+# Variables used for Check Point Security Management module
+mgmt_server: "{{eth0_ipv4}}" 
+fingerprint_file: './fingerprints/smsg01_finger.yml'

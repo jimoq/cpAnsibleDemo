@@ -1,0 +1,29 @@
+---
+# Adjust vars for your enviroment
+# These subnets and gateways will be created as part of the demo
+mgmt_user: api_user                                              # Admin user for R80 Security Management API
+mgmt_password: vpn123                                            # Admin password for R80 Security Management API
+gaia_admin_pwd_hash: $1$X9kqrCQD$g5Na9cevuwRDF91eU7eZH0          # Hashed password vpn123 to be used for gaia admin in new installations
+#vmnat8: 172.27.254                                              # VM - VMnat (VMnet8) Network address
+#virtual_machines: 'C:\Users\jimo\Documents\Virtual Machines\'   # VM - Location of virtual machines
+#vmname: template                                                # VM - Default name for template virtual machine
+sickey: vpn123                                                   # One time key to establish SIC
+template_ip: 172.27.254.3                                        # VM - Default ip for gaia_template virtual machine
+#template_ip: "{{ groups['gaia_template'][0] }}"                 # VM - Default ip for gaia_template virtual machine
+###############
+vpc_cidr: 10.2.0.0/16
+external_subnet_cidr: 10.2.0.0/24
+internal_subnet_cidr: 10.2.1.0/24
+webserver_subnet_cidr: 10.2.10.0/24
+database_subnet_cidr: 10.2.11.0/24
+lb1_subnet_cidr: 10.2.5.0/24
+lb2_subnet_cidr: 10.2.6.0/24
+perimeter_gw_external_ip: 10.2.0.10
+perimeter_gw_internal_ip: 10.2.1.10
+internal_route: 10.2.1.1
+r53zone: my53dnszone.net
+externaldnshost: vsec-demo 
+# Changes are not needed below this line
+primary_az: "{{ region }}a"
+secondary_az: "{{ region }}b"
+xchkp_topo: "specific:sko_nets"

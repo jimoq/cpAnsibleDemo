@@ -1,0 +1,11 @@
+---
+# tasks file for setting shell in gaia
+- name: set admin password
+  raw: set user admin password-hash {{gaia_admin_pwd_hash}}
+  vars:
+    ansible_ssh_pass: admin  # This is the default installation passord in GAIA, it is fine to have them in clear text
+  when: inventory_hostname in groups['gaia_template']
+
+- name: set shell
+  raw: set user admin shell /bin/bash
+  when: inventory_hostname in groups['gaia_template']

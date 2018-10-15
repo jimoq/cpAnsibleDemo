@@ -1,0 +1,37 @@
+---
+# Create Domains on MDS servers
+- name: "login"
+  check_point_mgmt:
+    command: login
+    parameters:
+      username: "{{mgmt_user}}"
+      password: "{{mgmt_password}}"
+      management: "{{mgmt_server}}"
+    fingerprint: "{{mgmt_fingerprint}}"
+  register: login_response
+  when: type == "mds"
+
+- name: "Create Domains on MDS"
+  check_point_mgmt:
+    command: add-domain
+    parameters:
+      name: "{{item.domain}}"
+      servers:
+        name: "{{item.dms}}"
+        ip-address: "{{item.ip_address}}"
+        multi-domain-server: "{{hostname}}"
+    session-data: "{{login_response}}"
+  loop: "{{chkp_domains}}"
+  when: type == "mds"
+
+- name: "publish"
+  check_point_mgmt:
+    command: publish
+    session-data: "{{login_response}}"
+  when: type == "mds"
+
+- name: "logout"
+  check_point_mgmt:
+    command: logout
+    session-data: "{{login_response}}"
+  when: type == "mds"

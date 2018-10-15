@@ -1,0 +1,8 @@
+---
+#tasks file for gaia
+- import_tasks: set_shell.yml
+- import_tasks: set_eth0.yml
+- import_tasks: run_ftw.yml
+- import_tasks: add_interface.yml
+- import_tasks: r80-set_api.yml
+  when: type != "sg"

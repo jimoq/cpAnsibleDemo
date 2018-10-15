@@ -1,0 +1,14 @@
+---
+# vars file for r80api
+# List of Check Point Administrators to created
+chkp_admins:
+- { name: 'Walter', password: '1234' }
+- { name: 'Saul', password: '1234' }
+- { name: 'Jesse', password: '1234' }
+- { name: 'Skyler', password: '1234' }
+# List of Check Point Domains to create
+chkp_domains:
+- { domain: 'nordics', dms: 'nordics-dms01', ip_address: '172.27.254.21' }
+- { domain: 'central-europe', dms: 'central-europe-dms01', ip_address: '172.27.254.22' }
+- { domain: 'southern-europe', dms: 'southern-europe-dms01', ip_address: '172.27.254.23' }
+- { domain: 'northern-europe', dms: 'northern-europe-dms01', ip_address: '172.27.254.24' }
