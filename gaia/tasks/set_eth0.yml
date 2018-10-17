@@ -15,4 +15,3 @@
   
 - pause:
     seconds: 15
-#  when: inventory_hostname in groups['gaia_template']

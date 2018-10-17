@@ -1,0 +1,64 @@
+---
+# tasks file for initialise_demo_env
+- name: Converting windows path {{virtual_machines}} to Linux path
+  set_fact:
+    linux_vm_folder: '{{virtual_machines | regex_replace("^C:", "/mnt/c") | regex_replace("^D:", "/mnt/d") | regex_replace("\\", "/") }}'
+
+- name: Setting Gaia answering floppy location on template virtual machine to {{linux_vm_folder}}
+  lineinfile:
+    path: ./template/template.vmx
+    regexp: 'floppy0.fileName ='
+    line: 'floppy0.fileName = "{{virtual_machines}}template\Gaia_Answer_Floppy_IP_172.27.254.3.flp"'
+
+- name: Setting Check Point GAIA Security Gateway ISO location on template virtual machine to {{linux_vm_folder}}
+  lineinfile:
+    path: ./template/template.vmx
+    regexp: 'sata0:1.fileName ='
+    line: 'sata0:1.fileName = "{{Gaia_SG_ISO}}Check_Point_R80.20_T101_Security_Gateway.iso"'
+    
+- name: Moving vitual machine template to host {{linux_vm_folder}}
+  raw: mv template {{ linux_vm_folder }}
+  
+- name: Creating pre-Gaia installation snapshot on template VM
+  raw: vmrun.exe -T ws snapshot "{{virtual_machines}}template\template.vmx" PreGaiaInstall
+
+- name: starting template VM with Check Point GAIA Security Gateway ISO
+  raw: vmrun.exe -T ws start "{{virtual_machines}}template\template.vmx" gui
+ 
+- name: Waiting up to 10 minutes for installation process to complete before moving to next task.
+  raw: vmrun.exe list
+  register: vmrun_output
+  until: vmrun_output.stdout.find('template.vmx') == -1
+  delay: 5
+  retries: 120
+ 
+- name: Creating Gaia clean install snapshot for Secuity Management and Security Gateway configuations on template VM
+  raw: vmrun.exe -T ws snapshot "{{virtual_machines}}template\template.vmx" pre-ftw
+
+- pause:
+    seconds: 5
+
+- name: Reverting to a snapshot PreGaiaInstall on template VM
+  raw: vmrun.exe -T ws revertToSnapshot "{{virtual_machines}}template\template.vmx" PreGaiaInstall
+
+- name: Setting Check Point GAIA Security Management ISO location on template virtual machine to {{linux_vm_folder}}
+  lineinfile:
+    path: "{{linux_vm_folder}}template/template.vmx"
+    regexp: 'sata0:1.fileName ='
+    line: 'sata0:1.fileName = "{{Gaia_SG_ISO}}Check_Point_R80.20_T101_Security_Management.iso"'
+  
+- name: starting template VM with Check Point GAIA Security Gateway ISO
+  raw: vmrun.exe -T ws start "{{virtual_machines}}template\template.vmx" gui
+
+- name: Waiting up to 10 minutes for installation process to complete before moving to next task.
+  raw: vmrun.exe list
+  register: vmrun_output
+  until: vmrun_output.stdout.find('template.vmx') == -1
+  delay: 5
+  retries: 120
+  
+- name: Creating Gaia clean install snapshot for Secuity Management configurations on template VM
+  raw: vmrun.exe -T ws snapshot "{{virtual_machines}}template\template.vmx" sm-pre-ftw
+
+- pause:
+    seconds: 5

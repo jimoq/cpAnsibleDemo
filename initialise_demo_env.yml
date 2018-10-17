@@ -1,0 +1,13 @@
+---
+# This playbook deploys the whole demo enviroment.
+#vars: {{virtual_machines}}
+
+- name: Initialising Check Point Ansible Demo enviroment
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  roles:
+  - role: initialise_demo_env
+    virtual_machines: D:\VirtualMachines\
+    Gaia_SG_ISO: C:\Users\jimo\Downloads\ISO and SMC\R80.20\
+    Gaia_SM_ISO: C:\Users\jimo\Downloads\ISO and SMC\R80.20\
