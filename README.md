@@ -1,5 +1,4 @@
-# Check Point Software Technologies 
-# Security Management and Gateway end to end demo using ansible
+# Check Point Security Management and Gateway end-to-end demo using ansible
 =========
 
 Local Ansible demo on workstations
