@@ -90,11 +90,11 @@ ansible-playbook SecurityCheckup.yml    # Build Securoty Checkup congfiguration 
 
 Admin users
 -------
-VM template:    uid: admin / pwd: admin
-VM sm:          uid: admin / pwd: vpn123
-VM smsg         uid: admin / pwd: vpn123
-VM mds          uid: admin / pwd: vpn123
-vm WebServer    uid: root / pwd: Cpwins1! (WIP not there yet)
+- VM template:    uid: admin / pwd: admin
+- VM sm:          uid: admin / pwd: vpn123
+- VM smsg         uid: admin / pwd: vpn123
+- VM mds          uid: admin / pwd: vpn123
+- VM WebServer    uid: root / pwd: Cpwins1! (WIP not there yet)
 
 License
 -------
