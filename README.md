@@ -1,4 +1,4 @@
-# Check Point Security Management and Gateway end-to-end demo using ansible
+# Check Point SM SG end-to-end demo using ansible
 =========
 
 Local Ansible demo on workstations
