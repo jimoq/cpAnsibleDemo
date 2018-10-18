@@ -60,7 +60,7 @@ sudo cp -r cpAnsible/check_point_mgmt/ $HOME/.ansible/plugins/modules/
 git clone --recursive https://github.com/jimoq/cpAnsibleDemo
 ```
 
-6. inizilize the demo enviroment
+6. initialise the demo enviroment
 This step will install Gaia on a virtual machine called template, The playbook will ask the user for some information. The installation process will run twice and two snapshots will be taken, one for security management only installations using Linux gaia kernel 3.10 (this snapshot is called sm-pre-ftw) and one for Security Gateway and Stand Alone (mgmt+gw on same machine) installations using Linux gaia kernel 2.6.18 (this snapshot is called pre-ftw). 
  - The ansible plabooks must be executen from local location.
  - Thw installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
