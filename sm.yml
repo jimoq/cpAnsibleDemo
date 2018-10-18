@@ -51,7 +51,7 @@
   - group_vars/sg_var.yml
   roles:
   - role: vmrun
-    hostname: sm_sg253
+    hostname: sm-sg253
 
 - name: Configure Gaia OS on SG server
   hosts: 
@@ -63,7 +63,7 @@
   - group_vars/sg_var.yml
   roles:
   - role: gaia
-    hostname: sm_sg253
+    hostname: sm-sg253
 
 - name: Configure SG Server using The R80.x Security Management API
   hosts: localhost
@@ -73,7 +73,7 @@
   - group_vars/sg_var.yml
   roles:
   - role: r80api
-    hostname: sm_sg253
+    hostname: sm-sg253
     mgmt_server: "{{ groups['sm'][0] }}"
     mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
     domain: SMC User

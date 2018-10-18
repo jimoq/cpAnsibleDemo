@@ -2,22 +2,40 @@
 # tasks file for initialise_demo_env
 - name: Converting windows path {{virtual_machines}} to Linux path
   set_fact:
-    linux_vm_folder: '{{virtual_machines | regex_replace("^C:", "/mnt/c") | regex_replace("^D:", "/mnt/d") | regex_replace("\\", "/") }}'
+    linux_vm_folder: "{{virtual_machines | regex_replace('^(?P<drive>.):', '/mnt/\\g<drive>') | regex_replace('\\\\', '/') | lower }}"
+
+- name: Create gaia.conf file
+  raw: echo -e "Interface:eth0\nIP:{{template_ip}}\nMask:255.255.255.0\nRoute:172.27.254.2\nDHCP:0\natEnd:shutdown" > ./template/gaia.conf
+    
+- name: Create Gaia answering floppy disk
+  command: /sbin/mkfs.fat -C ./template/Gaia_Answer_Floppy.flp 1440
+
+- pause:
+    seconds: 2
+    
+- name: Create Gaia answering floppy disk
+  command: "mcopy -i ./template/Gaia_Answer_Floppy.flp ./template/gaia.conf ::"
 
 - name: Setting Gaia answering floppy location on template virtual machine to {{linux_vm_folder}}
   lineinfile:
     path: ./template/template.vmx
     regexp: 'floppy0.fileName ='
-    line: 'floppy0.fileName = "{{virtual_machines}}template\Gaia_Answer_Floppy_IP_172.27.254.3.flp"'
+    line: 'floppy0.fileName = "{{virtual_machines}}template\Gaia_Answer_Floppy.flp"'
 
-- name: Setting Check Point GAIA Security Gateway ISO location on template virtual machine to {{linux_vm_folder}}
+- name: Setting Check Point GAIA Security Gateway ISO location on template virtual machine to {{Gaia_SG_ISO}}
   lineinfile:
     path: ./template/template.vmx
     regexp: 'sata0:1.fileName ='
-    line: 'sata0:1.fileName = "{{Gaia_SG_ISO}}Check_Point_R80.20_T101_Security_Gateway.iso"'
+    line: 'sata0:1.fileName = "{{Gaia_SG_ISO}}"'
+
+- name: Setting cpAnsibleDemo/group_vars/all virtual_machines var to {{virtual_machines}} path
+  lineinfile:
+    path: ./group_vars/all
+    regexp: 'virtual_machines:'
+    line: 'virtual_machines: {{virtual_machines}} # VM - Location to place virtual machines on host'
     
 - name: Moving vitual machine template to host {{linux_vm_folder}}
-  raw: mv template {{ linux_vm_folder }}
+  raw: mkdir -p "{{ linux_vm_folder }}"; mv template "{{ linux_vm_folder }}"
   
 - name: Creating pre-Gaia installation snapshot on template VM
   raw: vmrun.exe -T ws snapshot "{{virtual_machines}}template\template.vmx" PreGaiaInstall
@@ -41,11 +59,11 @@
 - name: Reverting to a snapshot PreGaiaInstall on template VM
   raw: vmrun.exe -T ws revertToSnapshot "{{virtual_machines}}template\template.vmx" PreGaiaInstall
 
-- name: Setting Check Point GAIA Security Management ISO location on template virtual machine to {{linux_vm_folder}}
+- name: Setting Check Point GAIA Security Management ISO location on template virtual machine to {{Gaia_SM_ISO}}
   lineinfile:
     path: "{{linux_vm_folder}}template/template.vmx"
     regexp: 'sata0:1.fileName ='
-    line: 'sata0:1.fileName = "{{Gaia_SG_ISO}}Check_Point_R80.20_T101_Security_Management.iso"'
+    line: 'sata0:1.fileName = "{{Gaia_SM_ISO}}"'
   
 - name: starting template VM with Check Point GAIA Security Gateway ISO
   raw: vmrun.exe -T ws start "{{virtual_machines}}template\template.vmx" gui

@@ -1,5 +1,5 @@
 ---
-hostname: sm10
+hostname: sm30
 snapshot: sm-pre-ftw
 type: sm
 sm_ip: 172.27.254.30
