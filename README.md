@@ -12,6 +12,8 @@ Requirements
 - VMware Workstation
 - 16 Gig of Ram
 - At least 50 Gb of avaliable diskspace
+- Check_Point_R80.20_T101_Security_Gateway.iso downloaded to the local Windows 10 host
+- Check_Point_R80.20_T101_Security_Management.iso downloaded to the local Windows 10 host
 
 Installation instructions
 --------------
