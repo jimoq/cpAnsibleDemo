@@ -9,6 +9,7 @@ Note: This demo has been tested and known to be working on on Ubuntu WSL
 Requirements
 ------------
 - Windows 10
+- Logged in user in Microsoft Store
 - VMware Workstation
 - 16 Gig of Ram
 - At least 50 Gb of avaliable diskspace
@@ -17,7 +18,7 @@ Requirements
 
 Installation instructions
 --------------
-1. Enable access to Windows Store on Domain joined machines
+1. Enable access to Microsoft Store on Domain joined machines
  - Usually the WSUS Policy prevents Windows 10 users to connect to Microsoft Store as organizations have configured local  Windows Server Update Services (WSUS) preventing these machines to connect to Microsoft Store in order to download apps for Windows 10.
  - To be able to download a Linux distribution as a app from Microsoft Store to use as Windows Subsystem for Linux (WSL). Open the registry by tuping regedit in te start menu and edit this value:
 ```
@@ -27,8 +28,9 @@ Value name: DoNotConnectToWindowsUpdateInternetLocations
 Value type: REG_DWORD 
 Value data: 0
 ```
-This should allow you to download programs from the Windows store for the next 90 minutes until Group Policy checks in again.
+This should allow you to download programs from the Microsoft Store for the next 90 minutes until Group Policy checks in again.
 I recommend that you set the value back to 1 in the registry to be compliant witht the company group policy.
+# NOTE: Before continuing. Open Microsoft Store by typing store in start menu and make sure you are logged into Microsoft Store with a user
 
 2. Enable Windows Subsystem for Linux (WSL) and install the Ubuntu Linux distro for WSL as a app.
 Follow the instructions on Microsofts Website: https://docs.microsoft.com/en-us/windows/wsl/install-win10. Do not forget to follow the steps to initilize the Linux distro instance.
@@ -62,12 +64,12 @@ git clone --recursive https://github.com/jimoq/cpAnsibleDemo
 
 6. initialise the demo enviroment
 This step will install Gaia on a virtual machine called template, The playbook will ask the user for some information. The installation process will run twice and two snapshots will be taken, one for security management only installations using Linux gaia kernel 3.10 (this snapshot is called sm-pre-ftw) and one for Security Gateway and Stand Alone (mgmt+gw on same machine) installations using Linux gaia kernel 2.6.18 (this snapshot is called pre-ftw). 
- - The ansible plabooks must be executen from local location.
+ - Note: The ansible plabooks must be executen from local location.
  - Thw installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
  - The VM template ip is default configured to 172.27.254.3 this can be changed by editing the tempate_ip line var in cpAnsibleDemo/group_vars/all
 ```
 cd cpcpAnsibleDemo
-ansible-plabook initialise_demo_env.yml
+ansible-playbook initialise_demo_env.yml
 ```
 
 Dependencies
