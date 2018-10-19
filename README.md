@@ -59,7 +59,7 @@ cp -r cpAnsible/check_point_mgmt/ $HOME/.ansible/plugins/modules/
 #### NOTE: The cpAnsibleDemo folder needs to be located in $HOME for example /home/sysadmin
 ```git
 git clone --recursive https://github.com/jimoq/cpAnsibleDemo
-chmod -Rv o-rwx cpAnsibleDemo/
+chmod -Rv o-rwx ./cpAnsibleDemo
 ```
 
 6. Add following lines to end of /etc/ansible/hosts
