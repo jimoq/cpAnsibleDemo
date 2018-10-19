@@ -1,5 +1,5 @@
 ---
-hostname: mds01
+hostname: mds10
 snapshot: sm-pre-ftw
 type: mds
 mds_ip: 172.27.254.10

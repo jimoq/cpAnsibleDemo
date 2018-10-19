@@ -1,7 +1,7 @@
 .encoding = "windows-1252"
 displayName = "template"
 config.version = "8"
-virtualHW.version = "14"
+virtualHW.version = "10"
 mks.enable3d = "TRUE"
 pciBridge0.present = "TRUE"
 pciBridge4.present = "TRUE"

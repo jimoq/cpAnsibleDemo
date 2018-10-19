@@ -10,7 +10,9 @@ vmname: template                                                 # VM - Default 
 template_ip: 172.27.254.3                                        # VM - Default ip for gaia_template virtual machine
 #template_ip: "{{ groups['gaia_template'][0] }}"                 # VM - Default ip for gaia_template virtual machine
 sickey: vpn123                                                   # One time key to establish SIC
-###############
+#####Do not change these vars as it will brake the automation workflow##########
+deployment: clean												 # Value must be Clean or blink, set deployment to general deployment or blink deployment
+################################################################################
 vpc_cidr: 10.2.0.0/16
 external_subnet_cidr: 10.2.0.0/24
 internal_subnet_cidr: 10.2.1.0/24

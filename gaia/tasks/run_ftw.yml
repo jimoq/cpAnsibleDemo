@@ -10,58 +10,51 @@
   command: config_system --config-string "hostname={{hostname }}&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&timezone='Europe/Stockholm'&install_security_managment=false&install_mds_primary=true&install_mds_interface=eth0&install_security_gw=false&gateway_daip=false&install_ppak=false&gateway_cluster_member=false&download_info=true&ntp_primary=se.pool.ntp.org&primary=8.8.8.8&domainname=local&reboot_if_required=true"
   async: 660
   poll: 5
-  when: type == "mds" and inventory_hostname not in groups['gaia_template']
+  when: type == "mds" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
 - name: "Run the First Time Wizard (FTW) to build Secondary MDS on {{hostname}}"
   command: config_system --config-string "hostname={{hostname }}&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&ftw_sic_key={{sickey}}&timezone='Europe/Stockholm'&install_security_managment=false&install_mds_secondary=true&install_mds_interface=eth0&install_security_gw=false&gateway_daip=false&install_ppak=false&gateway_cluster_member=false&download_info=true&ntp_primary=se.pool.ntp.org&primary=8.8.8.8&domainname=local&reboot_if_required=true"
   async: 660
   poll: 5
-  when: type == "sec_mds" and inventory_hostname not in groups['gaia_template']
+  when: type == "sec_mds" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
 - name: "Run the First Time Wizard (FTW) to build Stand Alone on {{hostname}}"
   command: config_system --config-string "hostname={{hostname}}&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&timezone='Europe/Stockholm'&install_security_managment=true&install_mgmt_primary=true&install_security_gw=true&gateway_daip=false&install_ppak=true&gateway_cluster_member=false&download_info=true&ntp_primary_version=1&ntp_primary=se.pool.ntp.org&primary=8.8.8.8&domainname=local&reboot_if_required=true"
   async: 660
   poll: 5
-  when: type == "smsg" and inventory_hostname not in groups['gaia_template']
+  when: type == "smsg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
 - name: "Run the First Time Wizard (FTW) to build Primary Management on {{hostname}}"
   command: config_system --config-string "hostname={{hostname}}&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&timezone='Europe/Stockholm'&install_security_managment=true&install_mgmt_primary=true&install_security_gw=false&gateway_daip=false&install_ppak=false&gateway_cluster_member=false&download_info=true&ntp_primary=se.pool.ntp.org&primary=8.8.8.8&domainname=local&reboot_if_required=true"
   async: 660
   poll: 5
-  when: type == "sm" and inventory_hostname not in groups['gaia_template']
+  when: type == "sm" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
 - name: "Run the First Time Wizard (FTW) to build Secondary Management on {{hostname}}"
   command: config_system --config-string "hostname={{hostname}}&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&ftw_sic_key={{sickey}}&timezone='Europe/Stockholm'&install_security_managment=true&install_mgmt_secondary=true&install_security_gw=false&gateway_daip=false&install_ppak=false&gateway_cluster_member=false&download_info=true&ntp_primary=se.pool.ntp.org&primary=8.8.8.8&domainname=local&reboot_if_required=true"
   async: 660
   poll: 5
-  when: type == "sec_sm" and inventory_hostname not in groups['gaia_template']
+  when: type == "sec_sm" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
 - name: "Run the First Time Wizard (FTW) to build Smart Event on {{hostname}}"
   command: config_system --config-string "hostname={{hostname}}&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&ftw_sic_key={{sickey}}&timezone='Europe/Stockholm'&install_security_managment=true&install_security_gw=false&gateway_daip=false&install_ppak=false&gateway_cluster_member=false&download_info=true&ntp_primary=se.pool.ntp.org&primary=8.8.8.8&domainname=local&reboot_if_required=true"
   async: 660
   poll: 5
-  when: type == "sme" and inventory_hostname not in groups['gaia_template']
+  when: type == "sme" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
 - name: "Run the First Time Wizard (FTW) to build Security Gateway on {{hostname}}"
   command: config_system --config-string "hostname={{hostname}}&ftw_sic_key={{sickey}}&timezone='Europe/Stockholm'&install_security_managment=false&install_mgmt_primary=false&install_security_gw=true&gateway_daip=false&install_ppak=true&gateway_cluster_member=false&download_info=true&reboot_if_required=true"
   async: 660
   poll: 0
-  when: type == "sg" and inventory_hostname not in groups['gaia_template']
+  when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
-#  - name: "Wait until FTW completes"
-#    wait_for:
-#      path: /etc/.wizard_accepted
-#      timeout: 720
-#      state: present
-#      msg: "Timeout to find file /etc/.wizard_accepted"
-#      
 - name: "Wait until FTW completes, time outs after 5 minutes"
   wait_for:
     path: /etc/.wizard_accepted
     timeout: 300
     state: present
     msg: "Timeout to find file /etc/.wizard_accepted"
-  when: inventory_hostname not in groups['gaia_template']
+  when: inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
 #  - name: "waiting for 10 seconds before reboot"
 #    pause:
