@@ -1,0 +1,81 @@
+---
+# This playbook deploys the whole demo enviroment.
+
+- name: Build hosts inventory in memory for localhost
+  hosts: localhost
+  gather_facts: no
+  vars_files:
+  - group_vars/mds_var.yml
+  - group_vars/sm_var.yml
+  - group_vars/smsg_var.yml
+  - group_vars/sg_var.yml
+  roles:
+    - inventory
+
+- name: Deploy a virtual machine as Security Management Server server
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+  - group_vars/sm_var.yml
+  roles:
+  - role: vmrun
+    hostname: bink-{{ hostname }}
+    deployment: blink
+
+- name: Configure Gaia OS on Security Management Server server
+  hosts: 
+  - "{{ target }}"
+  - "{{ groups['gaia_template'][0] }}"
+  connection: local
+  gather_facts: no
+  vars_files:
+  - group_vars/sm_var.yml
+  roles:
+    - gaia
+
+- name: Configure Security Management Server Server using The R80.x Security Management API
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+  - group_vars/sm_var.yml
+  roles:
+  - role: r80api
+    mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
+
+# Deploy a Security Gateway and configure it in the nordics domain
+- name: Deploy a virtual machine as SG server
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+  - group_vars/sg_var.yml
+  roles:
+  - role: vmrun
+    hostname: sm-sg253
+
+- name: Configure Gaia OS on SG server
+  hosts: 
+  - "{{ target }}"
+  - "{{ groups['gaia_template'][0] }}"
+  connection: local
+  gather_facts: no
+  vars_files:
+  - group_vars/sg_var.yml
+  roles:
+  - role: gaia
+    hostname: sm-sg253
+
+- name: Configure SG Server using The R80.x Security Management API
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+  - group_vars/sg_var.yml
+  roles:
+  - role: r80api
+    hostname: sm-sg253
+    mgmt_server: "{{ groups['sm'][0] }}"
+    mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
+    domain: SMC User

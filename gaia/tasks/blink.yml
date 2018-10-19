@@ -1,0 +1,9 @@
+---
+- name: "Configure Interface eth1 to {{eth1_ipv4}}/{{subnet-mask}}, interface eth2 to {{eth2_ipv4}}/{{subnet-mask}} and change state to on"
+  command: "{{ item }}"
+  with_items:
+    - clish -c 'set interface eth1 ipv4-address {{eth1_ipv4}} subnet-mask {{subnet_mask}}' -s
+    - clish -c 'set interface eth1 state on' -s
+    - clish -c 'set interface eth2 ipv4-address {{eth2_ipv4}} subnet-mask {{subnet_mask}}' -s
+    - clish -c 'set interface eth2 state on' -s
+  when: type == "sg" and inventory_hostname not in groups['gaia_template']
