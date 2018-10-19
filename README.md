@@ -42,10 +42,8 @@ Follow the instructions on Microsofts Website: https://docs.microsoft.com/en-us/
 ```
 sudo apt-add-repository -y ppa:ansible/ansible
 sudo apt-get update
-sudo apt-get install -y ansible python-pip
-sudo apt install python-pip
+sudo apt-get install -y ansible python-pip mtools
 pip install netaddr
-sudo apt install mtools
 ```
 
 4. Clone and copy the Ansible Module - check_point_mgmt by Check Point® to the correct location
