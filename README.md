@@ -30,7 +30,7 @@ Value data: 0
 ```
 This should allow you to download programs from the Microsoft Store for the next 90 minutes until Group Policy checks in again.
 I recommend that you set the value back to 1 in the registry to be compliant witht the company group policy.
-# NOTE: Before continuing. Open Microsoft Store by typing store in start menu and make sure you are logged into Microsoft Store with a user
+#### NOTE: Before continuing. Open Microsoft Store by typing store in start menu and make sure you are logged into Microsoft Store with a user
 
 2. Enable Windows Subsystem for Linux (WSL) and install the Ubuntu Linux distro for WSL as a app.
 Follow the instructions on Microsofts Website: https://docs.microsoft.com/en-us/windows/wsl/install-win10. Do not forget to follow the steps to initilize the Linux distro instance.
@@ -64,9 +64,9 @@ git clone --recursive https://github.com/jimoq/cpAnsibleDemo
 
 6. initialise the demo enviroment
 This step will install Gaia on a virtual machine called template, The playbook will ask the user for some information. The installation process will run twice and two snapshots will be taken, one for security management only installations using Linux gaia kernel 3.10 (this snapshot is called sm-pre-ftw) and one for Security Gateway and Stand Alone (mgmt+gw on same machine) installations using Linux gaia kernel 2.6.18 (this snapshot is called pre-ftw). 
- - Note: The ansible plabooks must be executen from local location.
- - Thw installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
- - The VM template ip is default configured to 172.27.254.3 this can be changed by editing the tempate_ip line var in cpAnsibleDemo/group_vars/all
+#### NOTE: The ansible plabooks must be executen from local location.
+#### NOTE: The installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
+#### NOTE: The VM template ip is default configured to 172.27.254.3 this can be changed by editing the tempate_ip line var in cpAnsibleDemo/group_vars/all
 ```
 cd cpcpAnsibleDemo
 ansible-playbook initialise_demo_env.yml
@@ -102,13 +102,10 @@ Admin users
 
 License
 -------
-
 Apache License 2.0
 
 Author Information
 ------------------
-<<<<<<< HEAD
 Jim Öqvist
-=======
-Jim Öqvist
->>>>>>> f41f87d4cb4174df8f1938204e6041d788ff6f07
+
+
