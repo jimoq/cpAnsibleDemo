@@ -105,4 +105,8 @@ Apache License 2.0
 
 Author Information
 ------------------
+<<<<<<< HEAD
 Jim Öqvist
+=======
+Jim Öqvist
+>>>>>>> f41f87d4cb4174df8f1938204e6041d788ff6f07
