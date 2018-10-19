@@ -49,18 +49,39 @@ pip install netaddr
 4. Clone and copy the Ansible Module - check_point_mgmt by Check Point® to the correct location
 ```
 git clone --recursive https://github.com/CheckPointSW/cpAnsible
-cp -r cpAnsible/check_point_mgmt/ /usr/lib/python2.7/dist-packages/ansible/
-cp -r cpAnsible/check_point_mgmt/cp_mgmt_api_python_sdk/ /usr/lib/python2.7/dist-packages/
+sudo cp -r cpAnsible/check_point_mgmt/ /usr/lib/python2.7/dist-packages/ansible/
+sudo cp -r cpAnsible/check_point_mgmt/cp_mgmt_api_python_sdk/ /usr/lib/python2.7/dist-packages/
 mkdir -p $HOME/.ansible/plugins/modules
 cp -r cpAnsible/check_point_mgmt/ $HOME/.ansible/plugins/modules/
 ```
 
-5. Clone the cpAnsibleDemo repository with this command:
+5. Clone the cpAnsibleDemo repository and change the permission on all files in that directory:
+#### NOTE: The cpAnsibleDemo folder needs to be located in $HOME for example /home/sysadmin
 ```git
 git clone --recursive https://github.com/jimoq/cpAnsibleDemo
+chmod -Rv o-rwx cpAnsibleDemo/
 ```
 
-6. initialise the demo enviroment
+6. Add following lines to end of /etc/ansible/hosts
+```
+[localhost:vars]
+#ansible_user=[sysadmin - User accout defined when you initialized your WSL distro]
+#ansible_ssh_pass=[mysecretpassword! - Password for you user account when you inizialized your distro]
+#ansible_python_interpreter=[/usr/bin/python - Path to the python interpreter on your WSL distro]
+ansible_user=sysadmin
+ansible_ssh_pass=mysecretpassword!
+ansible_python_interpreter=/usr/bin/python
+# Optional (variables detailing the Check Point's management server access): (these are already cinfugryed in the ansible roles packages/ for the demo and can be ignored)
+# mgmt_server=[management server's IP address. In case of a multi-domain setup, provide the IP address of the MDS]
+# mgmt_user=[Check Point admin username]
+# mgmt_password=[Check Point admin password]
+# mgmt_fingerprint=[Security Manamgement API server fingerprint]
+
+[localhost]
+127.0.0.1
+```
+
+8. initialise the demo enviroment
 This step will install Gaia on a virtual machine called template, The playbook will ask the user for some information. The installation process will run twice and two snapshots will be taken, one for security management only installations using Linux gaia kernel 3.10 (this snapshot is called sm-pre-ftw) and one for Security Gateway and Stand Alone (mgmt+gw on same machine) installations using Linux gaia kernel 2.6.18 (this snapshot is called pre-ftw). 
 #### NOTE: The ansible plabooks must be executen from local location.
 #### NOTE: The installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
