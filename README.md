@@ -81,6 +81,12 @@ ansible_python_interpreter=/usr/bin/python
 127.0.0.1
 ```
 
+7. Add location of vmrun.exe to widows path
+```
+Click  "Start Menu" > "This PC" > "Properties" > "Advanced System Setings" > "Enviroment Variables" > "Path" > "Edit" > "New" > "C:\Program Files (x86)\VMware\VMware Workstation"
+```
+This will add the path to vmrun.exe. This is most probobly "C:\Program Files (x86)\VMware\VMware Workstation". but you should verify that on your computer.
+
 8. initialise the demo enviroment
 This step will install Gaia on a virtual machine called template, The playbook will ask the user for some information. The installation process will run twice and two snapshots will be taken, one for security management only installations using Linux gaia kernel 3.10 (this snapshot is called sm-pre-ftw) and one for Security Gateway and Stand Alone (mgmt+gw on same machine) installations using Linux gaia kernel 2.6.18 (this snapshot is called pre-ftw). 
 #### NOTE: The ansible plabooks must be executen from local location.
