@@ -93,7 +93,7 @@ This step will install Gaia on a virtual machine called template, The playbook w
 #### NOTE: The installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
 #### NOTE: The VM template ip is default configured to 172.27.254.3 this can be changed by editing the tempate_ip line var in cpAnsibleDemo/group_vars/all
 ```
-cd cpcpAnsibleDemo
+cd cpAnsibleDemo
 ansible-playbook initialise_demo_env.yml
 ```
 
