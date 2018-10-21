@@ -37,17 +37,20 @@ Follow the instructions on Microsofts Website: https://docs.microsoft.com/en-us/
 
 3. Add required packages to your Ubuntu Linux distro for WSL
  - Open a command promt and type "wsl" to get into Ubuntu Linux distro for WSL.
- - Make sure you are in /home/sysadmin (cd ~)
  - Install Ansible Repo, python netaddr and mtools
 ```
+cd ~
 sudo apt-add-repository -y ppa:ansible/ansible
 sudo apt-get update
 sudo apt-get install -y ansible python-pip mtools
 pip install netaddr
+ansible --version
 ```
+#### NOTE: After this step verify that Ansibnle has been updated to latest version. ~2.7 or laters. 
 
 4. Clone and copy the Ansible Module - check_point_mgmt by Check Point® to the correct location
 ```
+cd ~
 git clone --recursive https://github.com/CheckPointSW/cpAnsible
 sudo cp -r cpAnsible/check_point_mgmt/ /usr/lib/python2.7/dist-packages/ansible/
 sudo cp -r cpAnsible/check_point_mgmt/cp_mgmt_api_python_sdk/ /usr/lib/python2.7/dist-packages/
@@ -58,6 +61,7 @@ cp -r cpAnsible/check_point_mgmt/ $HOME/.ansible/plugins/modules/
 5. Clone the cpAnsibleDemo repository and change the permission on all files in that directory:
 #### NOTE: The cpAnsibleDemo folder needs to be located in $HOME for example /home/sysadmin
 ```git
+cd ~
 git clone --recursive https://github.com/jimoq/cpAnsibleDemo
 chmod -Rv o-rwx ./cpAnsibleDemo
 ```
