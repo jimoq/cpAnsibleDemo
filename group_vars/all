@@ -5,7 +5,7 @@ mgmt_user: api_user                                              # Admin user fo
 mgmt_password: vpn123                                            # Admin password for R80 Security Management API
 gaia_admin_pwd_hash: $1$X9kqrCQD$g5Na9cevuwRDF91eU7eZH0          # Hashed password vpn123 to be used for gaia admin in new installations
 vmnat8: 172.27.254.0/24                                          # VM - VMnat (VMnet8) Network address
-virtual_machines: 'C:\Users\jimo\Documents\Virtual Machines\'    # VM - Location of virtual machines
+virtual_machines: 'C:\demo\'    # VM - Location of virtual machines
 vmname: template                                                 # VM - Default name for template virtual machine
 template_ip: 172.27.254.3                                        # VM - Default ip for gaia_template virtual machine
 #template_ip: "{{ groups['gaia_template'][0] }}"                 # VM - Default ip for gaia_template virtual machine
