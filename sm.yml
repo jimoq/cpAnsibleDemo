@@ -10,7 +10,8 @@
   - group_vars/smsg_var.yml
   - group_vars/sg_var.yml
   roles:
-    - inventory
+    - role: inventory
+      tags: [ "always" ]
 
 - name: Deploy a virtual machine as Security Management Server server
   hosts: localhost
@@ -19,7 +20,8 @@
   vars_files:
   - group_vars/sm_var.yml
   roles:
-   - vmrun
+    - role: vmrun
+      tags: [ "prepp-demo" ]
 
 - name: Configure Gaia OS on Security Management Server server
   hosts: 
@@ -30,7 +32,8 @@
   vars_files:
   - group_vars/sm_var.yml
   roles:
-    - gaia
+    - role: gaia
+      tags: [ "prepp-demo" ]
 
 - name: Configure Security Management Server Server using The R80.x Security Management API
   hosts: localhost
@@ -38,9 +41,11 @@
   gather_facts: no
   vars_files:
   - group_vars/sm_var.yml
+  - fingerprints/sm_finger.yml
   roles:
-  - role: r80api
-    mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
+    - role: r80api
+      tags: [ "sg-demo" ]
+#      mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
 
 # Deploy a Security Gateway and configure it in the nordics domain
 - name: Deploy a virtual machine as SG server
@@ -51,6 +56,7 @@
   - group_vars/sg_var.yml
   roles:
   - role: vmrun
+    tags: [ "sg-demo" ]
     hostname: sm-sg253
 
 - name: Configure Gaia OS on SG server
@@ -63,6 +69,7 @@
   - group_vars/sg_var.yml
   roles:
   - role: gaia
+    tags: [ "sg-demo" ]
     hostname: sm-sg253
 
 - name: Configure SG Server using The R80.x Security Management API
@@ -71,9 +78,22 @@
   gather_facts: no
   vars_files:
   - group_vars/sg_var.yml
+  - fingerprints/sm_finger.yml
   roles:
   - role: r80api
+    tags: [ "sg-demo" ]
     hostname: sm-sg253
     mgmt_server: "{{ groups['sm'][0] }}"
-    mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
+#    mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
     domain: SMC User
+
+- name: Deploy our E-comerce web server
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  roles:
+  - role: vmrun
+    tags: [ "never", "sg-demo", "webserver" ]
+    hostname: WebServer
+    type: webserver
+    virtual_machines: C:\Users\jimo\Documents\Virtual Machines\

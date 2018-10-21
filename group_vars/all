@@ -11,7 +11,7 @@ template_ip: 172.27.254.3                                        # VM - Default 
 #template_ip: "{{ groups['gaia_template'][0] }}"                 # VM - Default ip for gaia_template virtual machine
 sickey: vpn123                                                   # One time key to establish SIC
 #####Do not change these vars as it will brake the automation workflow##########
-deployment: clean												 # Value must be Clean or blink, set deployment to general deployment or blink deployment
+deployment: clean												 # Set deployment to "general deployment" or "blink deployment". Value must be "clean" or "blink".
 ################################################################################
 vpc_cidr: 10.2.0.0/16
 external_subnet_cidr: 10.2.0.0/24
@@ -20,7 +20,8 @@ webserver_subnet_cidr: 10.2.10.0/24
 database_subnet_cidr: 10.2.11.0/24
 lb1_subnet_cidr: 10.2.5.0/24
 lb2_subnet_cidr: 10.2.6.0/24
-perimeter_gw_external_ip: 10.2.0.10
+hst_dmz_webserver_ip: 10.2.0.10
+hst_nat_webserver_ip: 172.27.254.210
 perimeter_gw_internal_ip: 10.2.1.10
 internal_route: 10.2.1.1
 r53zone: my53dnszone.net
