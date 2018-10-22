@@ -6,6 +6,10 @@ Local Ansible demo using Vmware Workstations on windows 10
 Ansible playbook that provisions Check Point Security Management servers and Security Gateways as well as providing control over a Check Point Management server using Check Point's web-services APIs.
 Note: This demo has been tested and known to be working on on Ubuntu WSL
 
+Version
+------------
+2.0
+
 Requirements
 ------------
 - Windows 10
