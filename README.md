@@ -99,6 +99,8 @@ This step will install Gaia on a virtual machine called template, The playbook w
 ```
 cd cpAnsibleDemo
 ansible-playbook initialise_demo_env.yml
+# Next step is optional and will download the demo webserver used in demo deployment mode
+ansible-playbook download_and_install_demo_web_server.yml
 ```
 
 Dependencies
@@ -119,6 +121,18 @@ ansible-playbook sm.yml                 # Build Security Management with deploy 
 ansible-playbook smsg.yml               # Build Security Gmanagement and Gateway (Stand alone), configure policy in nordics and install that (execution tine ~15 min)
 ansible-playbook mds.yml                # Build MDS with 4 domanis and deploy a gateway, configure policy in nordics domain and install that on the security Gateway (execution tine ~30 min)
 ansible-playbook SecurityCheckup.yml    # Build Securoty Checkup congfiguration on physical appliance (WIP not there yet)
+```
+All the abowe playbooks can be executed in dusingemo deployment mode by usnig "--tags" switch
+ * The tag "prepp-demo" will prepare the enviroment by deploying the management components only.
+ * The tag "sg-demo" can be executed after the preparation phase.
+ * This tag will demostrate an unnatended Check Point gatewasy deployment and launch a webserver that is protected behind that gateway
+```
+ansible-playbook sm.yml --tags "prepp-demo" 
+ansible-playbook sm.yml --tags "sg-demo" 
+ansible-playbook smsg.yml --tags "prepp-demo" 
+ansible-playbook smsg.yml --tags "sg-demo" 
+ansible-playbook mds.yml --tags "prepp-demo" 
+ansible-playbook mds.yml --tags "sg-demo" 
 ```
 
 Admin users
