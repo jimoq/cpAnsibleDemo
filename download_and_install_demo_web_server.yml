@@ -1,0 +1,21 @@
+---
+# This playbook downloads and installs the demo WebServer VM.
+
+- name: Deploying demo webserver
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  tasks:
+  
+  - name: Converting windows path {{virtual_machines}} to Linux path
+    set_fact:
+      linux_vm_folder: "{{virtual_machines | regex_replace('^(?P<drive>.):', '/mnt/\\g<drive>') | regex_replace('\\\\', '/') | lower }}"
+  
+  - name: Download demo WebServer VM
+    raw: wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1GgKtbABiBukIPyr1JgYTlkpFuOHtYs4D' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1GgKtbABiBukIPyr1JgYTlkpFuOHtYs4D" -O webserver.zip && rm -rf /tmp/cookies.txt
+  
+  - name: Extract web server VM into {{linux_vm_folder}}
+    command: unzip webserver.zip -d {{linux_vm_folder}}
+    
+  - name: Cleaning up
+    command: rm -f webserver.zip

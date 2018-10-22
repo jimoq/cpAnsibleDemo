@@ -44,7 +44,9 @@
   - fingerprints/sm_finger.yml
   roles:
     - role: r80api
-      tags: [ "sg-demo" ]
+      mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
+    - role: r80api
+      tags: [ "never", "sg-demo" ]
 #      mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
 
 # Deploy a Security Gateway and configure it in the nordics domain
@@ -81,7 +83,12 @@
   - fingerprints/sm_finger.yml
   roles:
   - role: r80api
-    tags: [ "sg-demo" ]
+    hostname: sm-sg253
+    mgmt_server: "{{ groups['sm'][0] }}"
+    mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
+    domain: SMC User
+  - role: r80api
+    tags: [ "never", "sg-demo" ]
     hostname: sm-sg253
     mgmt_server: "{{ groups['sm'][0] }}"
 #    mgmt_fingerprint: "{{ hostvars[groups['sm'][0]]['mgmt_fingerprint'] }}"
@@ -96,4 +103,3 @@
     tags: [ "never", "sg-demo", "webserver" ]
     hostname: WebServer
     type: webserver
-    virtual_machines: C:\Users\jimo\Documents\Virtual Machines\
