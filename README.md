@@ -126,10 +126,10 @@ ansible-playbook smsg.yml               # Build Security Gmanagement and Gateway
 ansible-playbook mds.yml                # Build MDS with 4 domanis and deploy a gateway, configure policy in nordics domain and install that on the security Gateway (execution tine ~30 min)
 ansible-playbook SecurityCheckup.yml    # Build Securoty Checkup congfiguration on physical appliance (WIP not there yet)
 ```
-All the abowe playbooks can be executed in demo deployment mode by usnig "--tags" switch
- * The tag "prepp-demo" will prepare the enviroment by deploying the management components only.
+All the abowe playbooks can be executed in demo deployment mode by using "--tags" switch
+ * The tag "prepp-demo" will prepare the environment by deploying the management components only.
  * The tag "sg-demo" can be executed after the preparation phase.
- * This tag will demostrate an unnatended Check Point gatewasy deployment and launch a webserver that is protected behind that gateway
+ * This tag will demonstrate an unattended Check Point gateway deployment and launch a webserver that is protected behind that gateway
 ```
 ansible-playbook sm.yml --tags "prepp-demo" 
 ansible-playbook sm.yml --tags "sg-demo" 
