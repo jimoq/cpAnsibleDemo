@@ -110,9 +110,14 @@
   check_point_mgmt:
     command: add-host
     parameters:
-      name: "CHKP-SG-Hide"
-      ip-address: "{{ perimeter_gw_external_ip }}"
+      name: "hst-dmz-webserver"
+      ip-address: "{{ hst_dmz_webserver_ip }}"
       color: "red"
+      nat-settings:
+        auto-rule: "true"
+        method: static
+        ipv4-address: "{{ hst_nat_webserver_ip }}"
+        install-on: All
     session-data: "{{login_response}}"
 
 - name: "add access section default drop"
@@ -175,6 +180,7 @@
       destination:
         - "LoadBalancer1"
         - "LoadBalancer2"
+        - "hst-dmz-webserver"
       service:
         - "http"
         - "https"
@@ -286,17 +292,17 @@
       track: "Log"
     session-data: "{{login_response}}"
 
-- name: "add NAT rule for Webserver "
-  check_point_mgmt:
-    command: add-nat-rule
-    parameters:
-      package: "Orchestration_Demo_Policy"
-      comments: "Webserver NAT"
-      position: "top"
-      original-source: "WebServers"
-      translated-source: "CHKP-SG-Hide"
-      method: "hide"
-    session-data: "{{login_response}}"
+#- name: "add NAT rule for Webserver "
+#  check_point_mgmt:
+#    command: add-nat-rule
+#    parameters:
+#      package: "Orchestration_Demo_Policy"
+#      comments: "Webserver NAT"
+#      position: "top"
+#      original-source: "WebServers"
+#      translated-source: "CHKP-SG-Hide"
+#      method: "hide"
+#    session-data: "{{login_response}}"
 
 - name: "publish"
   check_point_mgmt:

@@ -6,21 +6,52 @@
   hosts: localhost
   vars_prompt:
   - name: "virtual_machines"
-    prompt: "Specify the location to store the virtual_ machines. For Example: D:\\Virtual Machines\\"
+    prompt: |
+        
+        
+        
+        #==================================================================================
+        # 
+        # Specify the location to store the virtual_ machines
+        # Be sure to include a subsequent backslash \
+        # For example: C:\demo\
+        # For default location press return
+        #==================================================================================
+    default: "c:\\demo\\"
     private: no
     
   - name: "Gaia_SG_ISO"
-    prompt: "Specify the location of you Gaia_Security_Gateway.iso. For Example: C:\\Downloads\\ISO\\Check_Point_R80.20_T101_Security_Gateway.iso"
+    prompt: |
+        
+        
+        
+        #==================================================================================
+        #
+        # Specify the location of you Gaia_Security_Gateway.iso
+        # For example: C:\Downloads\ISO\Check_Point_R80.20_T101_Security_Gateway.iso
+        # For default location press return
+        #==================================================================================
+    default: "C:\\Users\\jimo\\Downloads\\ISO and SMC\\R80.20\\Check_Point_R80.20_T101_Security_Gateway.iso"
     private: no
 
   - name: "Gaia_SM_ISO"
-    prompt: "Specify the location of you Gaia_Security_Management.iso. For Example: C:\\Downloads\\ISO\\Check_Point_R80.20_T101_Security_Management.iso"
+    prompt: |
+        
+        
+        
+        #==================================================================================
+        #
+        # Specify the location of you Gaia_Security_Management.iso
+        # For example: C:\Downloads\ISO\Check_Point_R80.20_T101_Security_Management.iso
+        # For default location press return
+        #==================================================================================
+    default: "C:\\Users\\jimo\\Downloads\\ISO and SMC\\R80.20\\Check_Point_R80.20_T101_Security_Management.iso"
     private: no
     
   gather_facts: no
   connection: local
   roles:
   - role: initialise_demo_env
-#    virtual_machines: 'D:\VirtualMachines\'
+#    virtual_machines: 'c:\demo\'
 #    Gaia_SG_ISO: C:\Users\jimo\Downloads\ISO and SMC\R80.20\Check_Point_R80.20_T101_Security_Gateway.iso
 #    Gaia_SM_ISO: C:\Users\jimo\Downloads\ISO and SMC\R80.20\Check_Point_R80.20_T101_Security_Management.iso

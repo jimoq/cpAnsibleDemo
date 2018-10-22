@@ -1,9 +1,14 @@
 ---
-- name: "Configure Interface eth1 to {{eth1_ipv4}}/{{subnet-mask}}, interface eth2 to {{eth2_ipv4}}/{{subnet-mask}} and change state to on"
-  command: "{{ item }}"
-  with_items:
-    - clish -c 'set interface eth1 ipv4-address {{eth1_ipv4}} subnet-mask {{subnet_mask}}' -s
-    - clish -c 'set interface eth1 state on' -s
-    - clish -c 'set interface eth2 ipv4-address {{eth2_ipv4}} subnet-mask {{subnet_mask}}' -s
-    - clish -c 'set interface eth2 state on' -s
-  when: type == "sg" and inventory_hostname not in groups['gaia_template']
+#- name: "Configure Interface eth1 to {{eth1_ipv4}}/{{subnet-mask}}, interface eth2 to {{eth2_ipv4}}/{{subnet-mask}} and change state to on"
+#  command: "{{ item }}"
+#  with_items:
+#    - mkdir -v /var/log/blink
+#  when: type == "sg" and inventory_hostname not in groups['gaia_template']
+#
+#tar -zxvf blink.tgz
+#chmod -v +x blink  
+#mkisofs -o /mnt/c/somedir/blink_r80.10.iso /mnt/c/Users/jimo/Downloads/ISO\ and\ SMC/blink\ R80.10/  
+#  mkdir /mnt/cdrom
+#  Mount the CD-ROM drive: mount /dev/cdrom /mnt/cdrom
+#  /mnt/dcrom/blink -i /mnt/dcrom/blink_image_1.0_Check_Point_R80.10_T462_Jumbo_T103_Gateway.tgz -b /mnt/dcrom/blink_updates_R80.10.tgz -a /home/admin/answers.xml -d <output directory> --reimage --delete-old-partition
+#  /mnt/dcrom/blink -i /mnt/dcrom/blink_im.tgz -b /mnt/dcrom/blink_up.tgz -a /home/admin/answers.xml --reimage --delete-old-partition

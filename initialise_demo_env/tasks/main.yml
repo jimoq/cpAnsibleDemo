@@ -7,6 +7,9 @@
 - name: Create gaia.conf file
   raw: echo -e "Interface:eth0\nIP:{{template_ip}}\nMask:255.255.255.0\nRoute:172.27.254.2\nDHCP:0\natEnd:shutdown" > ./template/gaia.conf
     
+- name: Remove old Gaia answering floppy disk if it exits
+  command: rm -f ./template/Gaia_Answer_Floppy.flp
+    
 - name: Create Gaia answering floppy disk
   command: /sbin/mkfs.fat -C ./template/Gaia_Answer_Floppy.flp 1440
 
@@ -34,8 +37,8 @@
     regexp: 'virtual_machines:'
     line: 'virtual_machines: {{virtual_machines}} # VM - Location to place virtual machines on host'
     
-- name: Moving vitual machine template to host {{linux_vm_folder}}
-  raw: mkdir -p "{{ linux_vm_folder }}"; mv template "{{ linux_vm_folder }}"
+- name: Copying vitual machine template to host {{linux_vm_folder}}
+  raw: mkdir -p "{{ linux_vm_folder }}"; cp -rf template "{{ linux_vm_folder }}"
   
 - name: Creating pre-Gaia installation snapshot on template VM
   raw: vmrun.exe -T ws snapshot "{{virtual_machines}}template\template.vmx" PreGaiaInstall
@@ -43,12 +46,12 @@
 - name: starting template VM with Check Point GAIA Security Gateway ISO
   raw: vmrun.exe -T ws start "{{virtual_machines}}template\template.vmx" gui
  
-- name: Waiting up to 10 minutes for installation process to complete before moving to next task.
+- name: Waiting up to 18 minutes for installation process to complete before moving to next task.
   raw: vmrun.exe list
   register: vmrun_output
   until: vmrun_output.stdout.find('template.vmx') == -1
   delay: 5
-  retries: 120
+  retries: 216
  
 - name: Creating Gaia clean install snapshot for Secuity Management and Security Gateway configuations on template VM
   raw: vmrun.exe -T ws snapshot "{{virtual_machines}}template\template.vmx" pre-ftw
@@ -68,12 +71,12 @@
 - name: starting template VM with Check Point GAIA Security Gateway ISO
   raw: vmrun.exe -T ws start "{{virtual_machines}}template\template.vmx" gui
 
-- name: Waiting up to 10 minutes for installation process to complete before moving to next task.
+- name: Waiting up to 18 minutes for installation process to complete before moving to next task.
   raw: vmrun.exe list
   register: vmrun_output
   until: vmrun_output.stdout.find('template.vmx') == -1
   delay: 5
-  retries: 120
+  retries: 216
   
 - name: Creating Gaia clean install snapshot for Secuity Management configurations on template VM
   raw: vmrun.exe -T ws snapshot "{{virtual_machines}}template\template.vmx" sm-pre-ftw
