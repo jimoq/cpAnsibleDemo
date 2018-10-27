@@ -36,7 +36,7 @@ Value data: 0
 ```
 This should allow you to download programs from the Microsoft Store until Group Policy checks in again.
 I recommend that you set the value back to 1 in the registry to be compliant with the company group policy.
-#### NOTE: Before continuing. Open Microsoft Store by typing store in start menu and make sure you are logged into Microsoft Store with a user
+##### NOTE: Before continuing. Open Microsoft Store by typing store in start menu and make sure you are logged into Microsoft Store with a user
 
 2. Enable Windows Subsystem for Linux (WSL) and install the Ubuntu Linux distro for WSL as a app.
 Follow the instructions on Microsoft’s Website: https://docs.microsoft.com/en-us/windows/wsl/install-win10. Do not forget to follow the steps to initialise the Linux distro instance.
@@ -52,7 +52,7 @@ sudo apt-get install -y ansible python-pip mtools unzip
 pip install netaddr
 ansible --version
 ```
-#### NOTE: After this step verify that Ansible has been updated to latest version, ~2.7 or later. 
+##### NOTE: After this step verify that Ansible has been updated to latest version, ~2.7 or later. 
 
 4. Clone and copy the Ansible Module - check_point_mgmt by Check Point® to the correct location
 ```
@@ -65,7 +65,7 @@ cp -r cpAnsible/check_point_mgmt/ $HOME/.ansible/plugins/modules/
 ```
 
 5. Clone the cpAnsibleDemo repository and change the permission on all files in that directory:
-#### NOTE: The cpAnsibleDemo folder needs to be located in $HOME for example /home/sysadmin
+##### NOTE: The cpAnsibleDemo folder needs to be located in $HOME for example /home/sysadmin
 ```
 cd ~
 git clone --recursive https://github.com/jimoq/cpAnsibleDemo
@@ -95,12 +95,13 @@ This will add the path to vmrun.exe. This is most probably "C:\Program Files (x8
  * The installation process will run twice and two snapshots will be taken
    *   1st snapshot is called pre-ftw for Security Gateway and Stand Alone installations using Linux kernel 2.6.18. 
    *   2nd snapshot is called sm-pre-ftw for security management only installations using Linux kernel 3.10 
-#### NOTE: The Ansible playbooks must be execute from within cpAnsibleDemo directory as there is a ansible.cfg located there.
-#### NOTE: The installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
-#### NOTE: The VM template ip is default configured to 172.27.254.3 this can be changed by editing the tempate_ip line var in cpAnsibleDemo/group_vars/all
+##### NOTE: The Ansible playbooks must be execute from within cpAnsibleDemo directory as there is a ansible.cfg located there.
+##### NOTE: The installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
+##### NOTE: The VM template ip is default configured to 172.27.254.3 this can be changed by editing the tempate_ip line var in cpAnsibleDemo/group_vars/all
 
-#### NOTE: The Ansible playbooks must be execute from within cpAnsibleDemo directory as there is a ansible.cfg located there.
+
 ```
+##### NOTE: The Ansible playbooks must be execute from within cpAnsibleDemo directory as there is a ansible.cfg located there.
 cd cpAnsibleDemo
 ansible-playbook initialise_demo_env.yml
 # Next step is optional and will download the demo webserver used in demo deployment mode
@@ -120,7 +121,7 @@ vi cpAnsibleDemo/group_vars/sm_var.yml
 
 Execution of Playbooks
 ------------
-#### NOTE: The Ansible playbooks must be execute from within cpAnsibleDemo directory as there is a ansible.cfg located there.
+##### NOTE: The Ansible playbooks must be execute from within cpAnsibleDemo directory as there is a ansible.cfg located there.
 
 ----------------
 ```
