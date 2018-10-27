@@ -1,10 +1,11 @@
-Check Point SM SG end-to-end demo using Ansible
+Check Point MDS, SM and SG end-to-end demo using Ansible
 =========
 
-Local Ansible demo using VMWare Workstations on windows 10
+What is this?
 ------------
-Ansible playbook that provisions Check Point Security Management servers and Security Gateways as well as providing control over a Check Point Management server using Check Point's web-services APIs.
-Note: This demo has been tested and known to be working on Ubuntu WSL
+
+Ansible playbooks that will without any user interaction provision Check Point Security Management server (SM) or Multi-Domain Managmenet Server (MDS) and Security Gateways (SG) as well as providing control over a Check Point Management server using the Ansible Module - check_point_mgmt by Check Point® and Check Point's Security Managemnet web-services APIs.
+##### Note: This demo has been tested and known to be working on Ubuntu WSL
 
 Version
 ------------
