@@ -4,7 +4,7 @@ Check Point MDS, SM and SG end-to-end demo using Ansible
 What is this?
 ------------
 
-Ansible playbooks that will without any user interaction provision Check Point Security Management server (SM) or Multi-Domain Managmenet Server (MDS) and Security Gateways (SG) as well as providing control over a Check Point Management server using the Ansible Module - check_point_mgmt by Check Point® and Check Point's Security Managemnet web-services APIs.
+Ansible playbooks that will without any user interaction provision Check Point Security Management server (SM) or Multi-Domain Management Server (MDS) and Security Gateways (SG) as well as providing control over a Check Point Management server using the Ansible Module - check_point_mgmt by Check Point® and Check Point's Security Management web-services APIs.
 ##### Note: This demo has been tested and known to be working on Ubuntu WSL
 
 Version
