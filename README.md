@@ -13,7 +13,7 @@ Version
 
 Requirements
 ------------
-- Windows 10
+- Windows 10 version that supports 
 - Logged in user in Microsoft Store
 - VMware Workstation 10 or later
 - 16 Gig of Ram
