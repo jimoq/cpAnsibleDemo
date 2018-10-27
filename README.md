@@ -93,8 +93,8 @@ This will add the path to vmrun.exe. This is most probably "C:\Program Files (x8
  * This step will install Gaia on a virtual machine called “template”.
  * The playbook will ask the user for some information. 
  * The installation process will run twice and two snapshots will be taken
-   *   Snapshot is called pre-ft for Security Gateway and Stand Alone installations using Linux kernel 2.6.18. 
-   *   Snapshot is called sm-pre-ftw for security management only installations using Linux kernel 3.10 
+   *   1st snapshot is called pre-ftw for Security Gateway and Stand Alone installations using Linux kernel 2.6.18. 
+   *   2nd snapshot is called sm-pre-ftw for security management only installations using Linux kernel 3.10 
 #### NOTE: The Ansible playbooks must be execute from within cpAnsibleDemo directory as there is a ansible.cfg located there.
 #### NOTE: The installation requires user interaction twice when the Gaia installation boot process starts, (as it starts twice).
 #### NOTE: The VM template ip is default configured to 172.27.254.3 this can be changed by editing the tempate_ip line var in cpAnsibleDemo/group_vars/all
