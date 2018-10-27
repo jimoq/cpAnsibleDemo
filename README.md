@@ -151,7 +151,7 @@ Admin users
 - VM sm:          uid: admin / pwd: vpn123
 - VM smsg         uid: admin / pwd: vpn123
 - VM mds          uid: admin / pwd: vpn123
-- VM WebServer    uid: root / pwd: Cpwins1! (WIP not there yet)
+- VM WebServer    uid: root / pwd: Cpwins1!
 
 License
 -------
