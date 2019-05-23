@@ -7,9 +7,9 @@
     ansible_user: admin
     ansible_ssh_pass: vpn123
     # Uncomment below line if you use R80.10
-    ##ansible_python_interpreter: /opt/CPsuite-R80/fw1/Python/bin/python
+    #ansible_python_interpreter: /opt/CPsuite-R80/fw1/Python/bin/python
     # Uncomment below line if you are using R80.20
-    ansible_python_interpreter: /opt/CPsuite-R80.20/fw1/Python/bin/python
+    #ansible_python_interpreter: /opt/CPsuite-R80.20/fw1/Python/bin/python
     # Uncomment below line if you are using R80.30 or later
     ansible_python_interpreter: /usr/bin/python
   with_items:
