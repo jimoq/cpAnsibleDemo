@@ -28,7 +28,7 @@
       ipv4-address: "{{eth0_ipv4}}" 
       color: blue
       firewall: "true"
-      version: "R80.20"
+      version: "{{gw_version}}"
       ips: "true"
       one-time-password: "{{sickey}}"
       interfaces:
