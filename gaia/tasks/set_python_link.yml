@@ -2,4 +2,4 @@
 # tasks setting symbolic link to python on gaia kernel 2.6 systems
 - name: "set symlink for python"
   raw: source /etc/bashrc ; [ -f /usr/bin/python ] && echo "/usr/bin/python exist" || ln -s $FWDIR/Python/bin/python /usr/bin/python
-#  when: inventory_hostname in groups['sg']
+  when: inventory_hostname in groups['gaia_template']
