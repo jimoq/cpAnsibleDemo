@@ -9,3 +9,4 @@ eth2_ipv4: 192.168.80.253
 subnet_mask: 255.255.255.0
 domain: SMC User
 target: "{{eth0_ipv4}}"            # Target to run the play
+gw_version: R80.30                 # Version to be used for the gateway object in the nordics domain
