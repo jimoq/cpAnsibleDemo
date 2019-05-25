@@ -2,6 +2,7 @@
 #tasks file for gaia
 - import_tasks: set_shell.yml
 - import_tasks: set_eth0.yml
+- set_python_link.yml
 - import_tasks: run_ftw.yml
 - import_tasks: blink.yml
   when: deployment == "blink"
