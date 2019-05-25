@@ -38,3 +38,8 @@
   add_host:
     hostname: "{{ smsg_ip }}"
     groups: smsg
+
+- name: add inventory host to sg group
+  add_host:
+    hostname: "{{ sg_ip }}"
+    groups: sg
