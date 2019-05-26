@@ -1,11 +1,4 @@
 ---
-- name: "Turn off reverse DNS lookups for the SSH daemon on {{hostname}}"
-  command: "{{item}}"
-  with_items:
-    - sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config # This removes time out problems if the Gaia machine does not have Internet access
-    - service sshd restart
-  when: inventory_hostname not in groups['gaia_template']
-
 - name: "Run the First Time Wizard (FTW) to build Primary MDS on {{hostname}}"
   command: config_system --config-string "hostname={{hostname }}&mgmt_admin_radio=gaia_admin&mgmt_gui_clients_radio=any&timezone='Europe/Stockholm'&install_security_managment=false&install_mds_primary=true&install_mds_interface=eth0&install_security_gw=false&gateway_daip=false&install_ppak=false&gateway_cluster_member=false&download_info=true&ntp_primary=se.pool.ntp.org&primary=8.8.8.8&domainname=local&reboot_if_required=true"
   async: 900
@@ -51,7 +44,7 @@
 - name: "Wait until FTW completes, time outs after 5 minutes"
   wait_for:
     path: /etc/.wizard_accepted
-    timeout: 300
+    timeout: 900
     state: present
     msg: "Timeout to find file /etc/.wizard_accepted"
   when: inventory_hostname not in groups['gaia_template'] and deployment == "clean"
