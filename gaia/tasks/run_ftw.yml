@@ -41,7 +41,7 @@
   poll: 0
   when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
-- name: "Wait until FTW completes, time outs after 5 minutes"
+- name: "Wait until FTW completes, time outs after 15 minutes"
   wait_for:
     path: /etc/.wizard_accepted
     timeout: 900
@@ -49,6 +49,14 @@
     msg: "Timeout to find file /etc/.wizard_accepted"
   when: inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
+- name: "Verify that security gatway is up with initial poliy loaded before moving to next task"
+  shell: source /etc/bashrc ; fw stat
+  register: fw_stat
+  until: fw_stat.stdout.find('InitialPolicy') != -1
+  delay: 5
+  retries: 100
+  when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
+  
 #  - name: "waiting for 10 seconds before reboot"
 #    pause:
 #      seconds: 10
