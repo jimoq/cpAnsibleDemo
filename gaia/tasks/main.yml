@@ -2,10 +2,11 @@
 #tasks file for gaia
 - import_tasks: set_shell.yml
 - import_tasks: set_python_link.yml
+- import_task: deactivate_reverse_DNS_lookup.yml
 - import_tasks: set_eth0.yml
+- import_tasks: add_interface.yml
 - import_tasks: run_ftw.yml
 - import_tasks: blink.yml
   when: deployment == "blink"
-- import_tasks: add_interface.yml
 - import_tasks: r80-set_api.yml
   when: type != "sg"
