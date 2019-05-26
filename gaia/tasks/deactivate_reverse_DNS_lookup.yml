@@ -4,4 +4,4 @@
   with_items:
     - sed -i 's/#UseDNS yes/UseDNS no/g' /etc/ssh/sshd_config # This removes time out problems if the Gaia machine does not have Internet access
     - service sshd restart
-  when: inventory_hostname not in groups['gaia_template']
+  when: inventory_hostname in groups['gaia_template']
