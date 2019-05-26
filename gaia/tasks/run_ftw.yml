@@ -49,10 +49,10 @@
     msg: "Timeout to find file /etc/.wizard_accepted"
   when: inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
-- name: Wait up to 10 minutes for SIC port 18211 to Open on {{target}}
+- name: Wait up to 10 minutes for SIC port 18211 to Open on {{hostname}}
   wait_for:
     port: 18211
-    host: "{{target}}"
+    host: "{{sg_ip}}"
     delay: 10
     timeout: 600
   connection: local
