@@ -49,6 +49,15 @@
     msg: "Timeout to find file /etc/.wizard_accepted"
   when: inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
+- name: Wait up to 10 minutes for SIC port 18211 to Open on {{target}}
+  wait_for:
+    port: 18211
+    host: "{{target}}"
+    delay: 10
+    timeout: 600
+  connection: local
+  when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
+
 - name: "Verify that security gatway is up with initial poliy loaded before moving to next task"
   shell: source /etc/bashrc ; fw stat
   register: fw_stat
