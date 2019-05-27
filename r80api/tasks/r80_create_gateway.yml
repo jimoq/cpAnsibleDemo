@@ -1,4 +1,14 @@
 ---
+#Verify that the Security Gateway is ready before creating the object in the management server
+- name: Wait up to 10 minutes for SIC port 18211 to open on {{sg_ip}}
+  wait_for:
+    port: 18211
+    host: "{{sg_ip}}"
+    delay: 5
+    timeout: 600
+  connection: local
+  when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
+  
 # If type is SG create Security Gateway Object and install AC and TP policy, if type is sgsm enable IPS blade and install AC and TP policy
 - name: "login"
   check_point_mgmt:
