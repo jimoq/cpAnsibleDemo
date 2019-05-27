@@ -49,19 +49,17 @@
     msg: "Timeout to find file /etc/.wizard_accepted"
   when: inventory_hostname not in groups['gaia_template'] and deployment == "clean"
 
-- name: "waiting 15 seconds for Security Gateway to reboot"
-  pause:
-    seconds: 15
-  when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
-
-#  - name: 'FTW - check on async task'
-#    async_status:
-#      jid: "{{ ftw.ansible_job_id }}"
-#    register: job_result
-#    until: job_result.finished
-#    retries: 30
-
-#  - name: Rebooting
-#    command: "shutdown -r now"
-
-  
+#- name: "waiting 15 seconds for Security Gateway to reboot"
+#  pause:
+#    seconds: 15
+#  when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
+#
+#- name: 'FTW - check on async task'
+#  async_status:
+#    jid: "{{ ftw.ansible_job_id }}"
+#  register: job_result
+#  until: job_result.finished
+#  retries: 30
+#
+#- name: Rebooting
+#  command: "shutdown -r now"
