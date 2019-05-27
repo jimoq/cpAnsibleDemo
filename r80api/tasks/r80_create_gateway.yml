@@ -6,7 +6,7 @@
     host: "{{sg_ip}}"
     delay: 5
     timeout: 600
-  connection: local
+  delegate_to: "{{mgmt_server}}"
   when: type == "sg" and inventory_hostname not in groups['gaia_template'] and deployment == "clean"
   
 # If type is SG create Security Gateway Object and install AC and TP policy, if type is sgsm enable IPS blade and install AC and TP policy
