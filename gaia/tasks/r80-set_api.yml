@@ -1,4 +1,13 @@
 ---
+- name: Wait 90 seconds then start polling ssh service {{mgmt_server}} to become open and contain "OpenSSH"
+  wait_for:
+    port: 22
+    host: "{{mgmt_server}}"
+    search_regex: OpenSSH
+    delay: 90
+  connection: local
+  when: inventory_hostname not in groups['gaia_template']
+
 - name: Check to see if API Server is ready.
   shell: source /etc/bashrc ; api status
   register: api_output
