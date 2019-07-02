@@ -1,5 +1,5 @@
 ---
-# This playbook deploys the whole demo enviroment.
+# This playbook deploys sg using blink.
 #
 #- name: Build hosts inventory in memory for localhost
 #  hosts: localhost
