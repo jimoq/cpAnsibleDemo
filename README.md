@@ -57,6 +57,7 @@ ansible --version
 4. Clone and copy the Ansible Module - check_point_mgmt by Check Point® to the correct location
 ```
 cd ~
+pip install git+https://github.com/CheckPointSW/cp_mgmt_api_python_sdk
 git clone --recursive https://github.com/CheckPointSW/cpAnsible
 sudo cp -r cpAnsible/check_point_mgmt/ /usr/lib/python2.7/dist-packages/ansible/
 sudo cp -r cpAnsible/check_point_mgmt/cp_mgmt_api_python_sdk/ /usr/lib/python2.7/dist-packages/
