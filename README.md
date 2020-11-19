@@ -5,7 +5,10 @@ What is this?
 ------------
 
 Ansible playbooks that will without any user interaction provision Check Point Security Management server (SM) or Multi-Domain Management Server (MDS) and Security Gateways (SG) as well as providing control over a Check Point Management server using the Ansible Module - check_point_mgmt by Check Point® and Check Point's Security Management web-services APIs.
+
 ##### Note: This demo has been tested and known to be working on Ubuntu WSL
+##### Note: This demo has not been tested with R80.30 or later versions, it might need some updates
+##### Note: The GAiA answering floppy feature has been removed in R81, the answers to the GAiA installation needs to be provided manually starting from R81
 
 Version
 ------------
@@ -24,6 +27,9 @@ Requirements
 
 Installation instructions
 --------------
+Installation video: https://youtu.be/weopo5ji3-U
+MDS depolyment video https://youtu.be/3uuoU1WWEd4
+
 1. Enable access to Microsoft Store on Domain joined machines
  - Usually the WSUS Policy prevents Windows 10 users to connect to Microsoft Store as organizations have configured local Windows Server Update Services (WSUS) preventing these machines to connect to Microsoft Store in order to download apps for Windows 10.
  - To be able to download a Linux distribution as a app from Microsoft Store to use as Windows Subsystem for Linux (WSL). Open the registry by typing “regedit” in the start menu and edit this value:
