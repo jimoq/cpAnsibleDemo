@@ -1,6 +1,11 @@
-Check Point MDS, SM and SG end-to-end demo using Ansible
+
+:warning: **This project is dicontinued**: Last tested version was R80.20
 =========
 
+
+
+Check Point MDS, SM and SG end-to-end demo using Ansible
+=========
 What is this?
 ------------
 
